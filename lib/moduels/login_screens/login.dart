@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 var emailController=TextEditingController();
 var passwordController=TextEditingController();
 var formKey=GlobalKey<FormState>();
-
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
