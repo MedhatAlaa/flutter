@@ -1,14 +1,16 @@
-import 'package:conditional_builder/conditional_builder.dart';
+
+
+import 'package:app/shared/cubit/cubit.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:udemy_flutter/shared/cubit/cubit.dart';
 
 Widget defaultButton({
   double width = double.infinity,
   Color background = Colors.blue,
   bool isUpperCase = true,
   double radius = 3.0,
-  @required Function function,
-  @required String text,
+  required VoidCallback? function,
+  required String text,
 }) =>
     Container(
       width: width,
@@ -17,7 +19,7 @@ Widget defaultButton({
         onPressed: function,
         child: Text(
           isUpperCase ? text.toUpperCase() : text,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
         ),
@@ -31,17 +33,17 @@ Widget defaultButton({
     );
 
 Widget defaultFormField({
-  @required TextEditingController controller,
-  @required TextInputType type,
-  Function onSubmit,
-  Function onChange,
-  Function onTap,
+  required TextEditingController controller,
+  required TextInputType type,
+  ValueChanged<String>? onSubmit,
+  ValueChanged<String>? onChange,
+  GestureTapCallback? onTap,
   bool isPassword = false,
-  @required Function validate,
-  @required String label,
-  @required IconData prefix,
-  IconData suffix,
-  Function suffixPressed,
+  required FormFieldValidator<String>? validate,
+  required String label,
+  required IconData prefix,
+  IconData? suffix,
+  VoidCallback? suffixPressed,
   bool isClickable = true,
 }) =>
     TextFormField(
@@ -82,7 +84,7 @@ Widget buildTaskItem(Map model, context) => Dismissible(
             '${model['time']}',
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 20.0,
         ),
         Expanded(
@@ -92,21 +94,21 @@ Widget buildTaskItem(Map model, context) => Dismissible(
             children: [
               Text(
                 '${model['title']}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 '${model['date']}',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.grey,
                 ),
               ),
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 20.0,
         ),
         IconButton(
@@ -117,7 +119,7 @@ Widget buildTaskItem(Map model, context) => Dismissible(
               id: model['id'],
             );
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.check_box,
             color: Colors.green,
           ),
@@ -129,7 +131,7 @@ Widget buildTaskItem(Map model, context) => Dismissible(
               id: model['id'],
             );
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.archive,
             color: Colors.black45,
           ),
@@ -144,9 +146,9 @@ Widget buildTaskItem(Map model, context) => Dismissible(
 );
 
 Widget tasksBuilder({
-  @required List<Map> tasks,
+  required List<Map> tasks,
 }) => ConditionalBuilder(
-  condition: tasks.length > 0,
+  condition: tasks.isNotEmpty,
   builder: (context) => ListView.separated(
     itemBuilder: (context, index)
     {
@@ -167,7 +169,8 @@ Widget tasksBuilder({
   fallback: (context) => Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      children:const
+      [
         Icon(
           Icons.menu,
           size: 100.0,
