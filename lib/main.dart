@@ -1,11 +1,7 @@
-import 'package:app/moduels/bmi_screens/bmi_result.dart';
-import 'package:app/moduels/bmi_screens/bmi_screens.dart';
-import 'package:app/moduels/home.dart';
-import 'package:app/moduels/login_screens/login.dart';
-import 'package:app/moduels/users_screen.dart';
+import 'package:app/layout/home1_layout.dart';
+
 import 'package:flutter/material.dart';
 
-import 'moduels/messenger_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,9 +12,9 @@ class MyApp extends StatelessWidget
   @override
   Widget build(BuildContext context)
   {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BmiScreens(),
+      home: HomeLayout(),
     );
   }
 
