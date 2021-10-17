@@ -2,6 +2,7 @@ import 'package:app/moduels/todos/archive_task_screen.dart';
 import 'package:app/moduels/todos/done_task_screen.dart';
 import 'package:app/moduels/todos/new_task_screen.dart';
 import 'package:app/shared/cubit/states.dart';
+import 'package:app/shared/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
@@ -14,7 +15,8 @@ class AppCubit extends Cubit<AppStates> {
 
   int currentIndex = 0;
 
-  List<Widget> screens = [
+  List<Widget> screens = const
+  [
     NewTasksScreen(),
     DoneTasksScreen(),
     ArchivedTasksScreen(),
@@ -153,5 +155,23 @@ class AppCubit extends Cubit<AppStates> {
     fabIcon = icon;
 
     emit(AppChangeBottomSheetState());
+  }
+
+  bool isDark=false;
+  void changeAppMode({bool? fromShard})
+  {
+    if(fromShard!=null)
+      {
+        isDark=fromShard;
+        emit(AppChangeModeState());
+      }
+    else
+      {
+        isDark=!isDark;
+        CacheHelper.setBoolean(key:'isDark', value:isDark).then((value)
+        {
+          emit(AppChangeModeState());
+        });
+      }
   }
 }

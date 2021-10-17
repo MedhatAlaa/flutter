@@ -1,5 +1,6 @@
 
 
+import 'package:app/moduels/news_app/web_view/web_view.dart';
 import 'package:app/shared/cubit/cubit.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -154,16 +155,7 @@ Widget tasksBuilder({
     {
       return buildTaskItem(tasks[index], context);
     },
-    separatorBuilder: (context, index) => Padding(
-      padding: const EdgeInsetsDirectional.only(
-        start: 20.0,
-      ),
-      child: Container(
-        width: double.infinity,
-        height: 1.0,
-        color: Colors.grey[300],
-      ),
-    ),
+    separatorBuilder: (context, index) =>myDivider(),
     itemCount: tasks.length,
   ),
   fallback: (context) => Center(
@@ -188,3 +180,130 @@ Widget tasksBuilder({
     ),
   ),
 );
+
+Widget myDivider()=>Padding(
+  padding: const EdgeInsetsDirectional.only(
+    start: 20.0,
+  ),
+  child: Container(
+    width: double.infinity,
+    height: 1.0,
+    color: Colors.grey[300],
+  ),
+);
+Widget buildNewsItem(article,context)=>InkWell(
+  onTap: ()
+  {
+    navigateTo(context, WebViewScreen(article['url']));
+  },
+  child:Padding(
+
+    padding: const EdgeInsets.all(20.0),
+
+    child: Row(
+
+      children:
+
+      [
+
+        Container(
+
+          height: 120.0,
+
+          width: 120.0,
+
+          decoration: BoxDecoration(
+
+            image: DecorationImage(
+
+              image:NetworkImage('${article['urlToImage']}'),
+
+              fit: BoxFit.cover,
+
+            ),
+
+            borderRadius: BorderRadius.circular(10.0),
+
+          ),
+
+        ),
+
+        const SizedBox(
+
+          width: 15.0,
+
+        ),
+
+        Expanded(
+
+          child: Container(
+
+            height: 120.0,
+
+            child: Column(
+
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children:
+
+              [
+
+                Expanded(
+
+                  child: Text(
+
+                    ('${article['title']}'),
+
+                    style:Theme.of(context).textTheme.bodyText1,
+
+                    maxLines: 3,
+
+                    overflow:TextOverflow.ellipsis,
+
+                  ),
+
+                ),
+
+                Text(
+
+                  ('${article['publishedAt']}'),
+
+                  style:const TextStyle(
+
+                    color: Colors.grey,
+
+                  ),
+
+                ),
+
+              ],
+
+            ),
+
+          ),
+
+        ),
+
+      ],
+
+    ),
+
+  ),
+);
+
+Widget buildArticleItem(list,context,{isSearch=false})=> ConditionalBuilder(
+  condition:list.isNotEmpty,
+  builder:(context)=>ListView.separated(
+    physics: const BouncingScrollPhysics(),
+    itemBuilder:(context,index)=>buildNewsItem(list[index],context),
+    separatorBuilder:(context,index)=> myDivider(),
+    itemCount:list.length,
+  ),
+  fallback:(context)=>isSearch?Container(): const Center(child:  CircularProgressIndicator()) ,
+);
+
+void navigateTo(context,widget)=>Navigator.push(
+  context,
+  MaterialPageRoute(builder:(context)=>widget,
+  ),);
+
